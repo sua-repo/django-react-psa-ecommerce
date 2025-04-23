@@ -1,0 +1,158 @@
+<!--dev_18-->
+{% extends "layout/base.html" %}
+{% load humanize %}
+{% block head %}
+    {% include "layout/head.html" %}
+{% endblock %}
+{% block navi %}
+    {% include "layout/navbar.html" %}
+{% endblock navi %}
+{% block header %}
+    <div class="d-flex flex-column vh-100 justify-content-between">
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">장바구니</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">장바구니 summary</p>
+                </div>
+            </div>
+        </header>
+    {% endblock header %}
+    {% block content %}
+        <div class="container">
+            {% if cart %}
+                {% comment %} item = {"quantity":7,"price":3000.00,"product": <Product : 상품1>, "total_price":21000 } {% endcomment %}
+                {% for item in cart %}
+                    <div class="card mt-3">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src=" {{ item.product.image.url }}"
+                                     style="width:100%;
+                                            height:25rem;
+                                            object-fit:fill"
+                                     class="img-fluid rounded-start"
+                                     alt="..." />
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body mt-4">
+                                    <center>
+                                        <h5 class="card-title">{{ item.product.name }}</h5>
+                                        <p class="card-text">{{ item.product.description }}</p>
+                                        <!--dev_21-->
+                                        {% if item.product.is_sale %}
+                                            <div class="d-flex justify-content-center small text-warning mb-2">
+                                                <div class="bi-star-fill"></div>
+                                                <div class="bi-star-fill"></div>
+                                                <div class="bi-star-fill"></div>
+                                                <div class="bi-star-fill"></div>
+                                                <div class="bi-star-fill"></div>
+                                            </div>
+                                            <!-- Product price-->
+                                            <strike>
+                                                <del>{{ item.product.price }}원</del>
+                                            </strike>
+                                            <br />
+                                            ID :&nbsp;{{ item.product.id }}
+                                            <br />
+                                            &nbsp;{{ item.product.sale_price }}원
+                                        {% else %}
+                                            {{ item.product.price }}원
+                                            <br />
+                                            ID :
+                                            {{ item.product.id }}
+                                        {% endif %}
+                                        <br />
+                                        <br />
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-2">Quantity</div>
+                                            <!--dev_20-->
+                                            <input type="text"
+                                                   id="input-{{ item.product.id }}"
+                                                   value="{{ item.quantity }}"
+                                                   class="col-md-2">
+                                        </div>
+                                        <br />
+                                        <a href="{% url 'store:home' %}" class="btn btn-secondary">홈으로</a>
+                                        {% comment %} <button type="button"
+         value="{{product.id}}"
+         id="add-cart"
+         class="btn btn-secondary">Add to Cart</button> {% endcomment %}
+                                        <button type="button"
+                                                data-index="{{ item.product.id }}"
+                                                class="btn btn-secondary update-cart">업데이트</button>
+                                        <button type="button"
+                                                data-index="{{ item.product.id }}"
+                                                class="btn btn-danger delete-product">삭제</button>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <!--dev_21-->
+                <h3 class="text-center">Total:{{ totals|floatformat:"0"|default_if_none:"0" }}</h3>
+                <!--dev_24-->
+                {% comment %} <form method="post" action="{% url 'orders:create_orders' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success text-center">주문</button>
+                </form> {% endcomment %}
+                <!--dev_25-->
+                <a href="{% url 'orders:create_orders' %}">
+                    <button type="button" class="btn btn-success text-center">주문</button>
+                </a>
+            {% else %}
+                <h1>장바구니에 물품이 없습니다.</h1>
+            {% endif %}
+        </div>
+    {% endblock content %}
+    {% block footer %}
+        {% include "layout/footer.html" %}
+    </div>
+{% endblock footer %}
+<!--dev_19-->
+{% block script %}
+    <script>
+        //dev_20
+        $(document).on('click','.update-cart',function(e){
+            let productid = $(this).data("index")
+            let qty = $("#input-" + productid).val()
+            
+            $.ajax({
+                type:"post",
+                url:"{% url 'cart:update_cart' %}",
+                data:{
+                    product_id: $(this).data("index"),
+                    product_qty:qty,
+                    csrfmiddlewaretoken:'{{ csrf_token }}',
+                    action:"update"
+                },
+                success:function(json){
+                    console.log(json)
+                    location.reload();                 
+                },
+                error: function(e){
+                    console.log(e)
+                }
+            });
+        });
+
+    $(document).on('click','.delete-product',function(e){
+        $.ajax({
+            type:"post",
+            url:"{% url 'cart:delete_cart' %}",
+            data:{
+                product_id: $(this).data("index"),
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                action:"post"
+            },
+            success:function(json){
+                console.log(json)
+                location.reload();                 
+            },
+            error: function(e){
+                console.log(e)
+            }
+        });
+    });
+    </script>
+{% endblock script %}

@@ -1,0 +1,43 @@
+{% extends "layout/base.html" %}
+{% load humanize %}
+
+{% block head %}
+    {% include "layout/head.html" %}
+{% endblock head %} 
+
+{% block navi %}
+    {% include "layout/navbar.html" %}
+    <div class="d-flex flex-column vh-100 justify-content-between">
+{% endblock navi %}
+
+{% block header %}
+    <header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">카테고리</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Choose your Category Below..</p>
+        </div>
+    </div>
+</header>
+{% endblock header %}
+
+{% block content %}
+    <section class="container justify-content-center">
+        <div class="row">
+            <center>
+                <div class="col-8 mt-5">
+
+                    {% for category in categories %}
+                        <a href="{% url 'store:category' category.id %}"><h2 class="text-center">{{ category.name }}</h2></a>
+                    {% endfor %}
+                
+                </div>
+            </center>
+        </div>
+    </section>
+{% endblock content %}
+
+{% block footer %}
+    {% include "layout/footer.html" %}
+    </div>
+{% endblock footer %}

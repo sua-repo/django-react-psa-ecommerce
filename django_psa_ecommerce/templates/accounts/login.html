@@ -1,0 +1,51 @@
+<!-- dev_9 -->
+{% extends "layout/base.html" %}
+{% load humanize %}
+
+{% block head %}
+    {% include "accounts/head.html" %}
+{% endblock head %} 
+
+{% block navi %}
+    <div class="d-flex flex-column vh-100 justify-content-between">
+    {% include "layout/navbar.html" %}
+{% endblock navi %}
+
+<!-- 로그인 템플릿 적용 -->
+{% block content %}
+    <div class="wrapper">
+        <div class="logo">
+            <img src="https://www.freepnglogos.com/uploads/twitter-logo-png/twitter-bird-symbols-png-logo-0.png" alt="">
+        </div>
+        <div class="text-center mt-4 name">Login</div>
+        <form class="p-3 mt-3" method="post" action="{% url 'accounts:login_user' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            
+            <!-- 로그인 성공후 이동되는 URL -->
+            {% include "layout/form_errors.html" %}
+            <div class="form-field d-flex align-items-center">
+                <span class="far fa-user"></span>
+                <input type="text" name="username" id="username" placeholder="아이디">
+            </div>
+            
+            <div class="form-field d-flex align-items-center">
+                <span class="fas fa-key"></span>
+                <input type="password" name="password" id="pwd" placeholder="패스워드">
+            </div>
+            
+            <button class="btn mt-3">Login</button>
+        </form>
+        
+        <div class="text-center fs-6">
+            <a href="#">Forget password?</a>
+            or
+            <a href="#">Sign up</a>
+        </div>
+    </div>
+{% endblock content %}
+<!-- 로그인 템플릿 적용 완료 -->
+
+{% block footer %}
+    {% include "layout/footer.html" %}
+{% endblock footer %}

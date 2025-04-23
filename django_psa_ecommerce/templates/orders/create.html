@@ -1,0 +1,417 @@
+<!--dev_25-->
+{% extends "layout/base.html" %}
+{% load humanize %}
+{% block head %}
+    <!--dev26-->
+    {% include "orders/head.html" %}
+{% endblock head %}
+{% block navi %}
+    {% include "layout/navbar.html" %}
+    <div class="d-flex flex-column vh-100 justify-content-between">
+    {% endblock navi %}
+    {% block header %}
+        <!-- Header -->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">주문페이지(CheckOut page)</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">주문을 해주세요. !!~~</p>
+                </div>
+            </div>
+        </header>
+    {% endblock header %}
+    {% block content %}
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <h1 class="mb-4">Billing details</h1>
+                <!--dev_24-->
+                <!--dev_26_2-->
+                <form id="payment-form"
+                      method="post"
+                      action="{% url 'payment:payment_process' %}">
+                    {% csrf_token %}
+                    {% include "layout/form_errors.html" %}
+                    <div class="row g-5">
+                        <div class="col-md-12 col-lg-6 col-xl-7">
+                            {% comment %} <div class="row">
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3">이름<sup>*</sup></label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-6">
+                                <div class="form-item w-100">
+                                    <label class="form-label my-3">Last Name<sup>*</sup></label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            </div> {% endcomment %}
+                            <div class="form-item">
+                                <label class="form-label my-3">
+                                    이름<sup>*</sup>
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="full_name"
+                                       value="{{ form.full_name.value | default_if_none:'' }}">
+                            </div>
+                            {% comment %} <div class="form-item">
+                            <label class="form-label my-3">Company Name<sup>*</sup></label>
+                            <input type="text" class="form-control">
+                            </div> {% endcomment %}
+                            <div class="form-item">
+                                <label class="form-label my-3">
+                                    Address <sup>*</sup>
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder="House Number Street Name"
+                                       name="address1"
+                                       value="{{ form.address1.value|default_if_none:'' }}">
+                            </div>
+                            <div class="form-item">
+                                <label class="form-label my-3">
+                                    Town/City<sup>*</sup>
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="city"
+                                       value="{{ form.city.value|default_if_none:'' }}">
+                            </div>
+                            <div class="form-item">
+                                <label class="form-label my-3">
+                                    Country<sup>*</sup>
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="country"
+                                       value="{{ form.country.value|default_if_none:'' }}">
+                            </div>
+                            <div class="form-item">
+                                <label class="form-label my-3">
+                                    Postcode/Zip<sup>*</sup>
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       name="zipcode"
+                                       value="{{ form.zipcode.value|default_if_none:'' }}">
+                            </div>
+                            <div class="form-item">
+                                <label class="form-label my-3">
+                                    Mobile<sup>*</sup>
+                                </label>
+                                <input type="tel"
+                                       class="form-control"
+                                       name="phone"
+                                       value="{{ form.phone.value|default_if_none:'' }}">
+                            </div>
+                            <div class="form-item">
+                                <label class="form-label my-3">
+                                    Email Address<sup>*</sup>
+                                </label>
+                                <input type="email"
+                                       class="form-control"
+                                       name="email"
+                                       value="{{ form.email.value|default_if_none:'' }}">
+                            </div>
+                            {% comment %} <div class="form-check my-3">
+                            <input type="checkbox" class="form-check-input" id="Account-1" name="Accounts" value="Accounts">
+                            <label class="form-check-label" for="Account-1">Create an account?</label>
+                            </div> {% endcomment %}
+                            <hr>
+                            <div class="form-check my-3">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="Address-1"
+                                       name="Address"
+                                       value="Address">
+                                <label class="form-check-label" for="Address-1">Ship to a different address?</label>
+                            </div>
+                            <div class="form-item">
+                                <textarea name="text"
+                                          class="form-control"
+                                          spellcheck="false"
+                                          cols="30"
+                                          rows="11"
+                                          placeholder="Oreder Notes (Optional)">문앞에 놔 주세요.</textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6 col-xl-5">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Products</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in cart %}
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="d-flex align-items-center mt-2">
+                                                        <img src="{{ item.product.image.url }}"
+                                                             class="img-fluid rounded-circle"
+                                                             style="width: 90px;
+                                                                    height: 90px"
+                                                             alt="">
+                                                    </div>
+                                                </th>
+                                                <td class="py-5 text-center">{{ item.product.name }}</td>
+                                                <td class="py-5">{{ item.price }}</td>
+                                                <td class="py-5 text-center">{{ item.quantity }}</td>
+                                                <td class="py-5">{{ item.total_price }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        {% comment %} <tr>
+                                        <th scope="row">
+                                            <div class="d-flex align-items-center mt-2">
+                                                <img src="img/vegetable-item-5.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
+                                            </div>
+                                        </th>
+                                        <td class="py-5">Potatoes</td>
+                                        <td class="py-5">$69.00</td>
+                                        <td class="py-5">2</td>
+                                        <td class="py-5">$138.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="d-flex align-items-center mt-2">
+                                                <img src="img/vegetable-item-3.png" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
+                                            </div>
+                                        </th>
+                                        <td class="py-5">Big Banana</td>
+                                        <td class="py-5">$69.00</td>
+                                        <td class="py-5">2</td>
+                                        <td class="py-5">$138.00</td>
+                                        </tr> {% endcomment %}
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td class="py-5"></td>
+                                            <td class="py-5"></td>
+                                            <td class="py-5">
+                                                <p class="mb-0 text-dark py-3">Subtotal</p>
+                                            </td>
+                                            <td class="py-5">
+                                                <div class="py-3 border-bottom border-top">
+                                                    <p class="mb-0 text-dark">{{ cart.get_product_total }}원</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td class="py-5">
+                                                <p class="mb-0 text-dark py-4">Shipping</p>
+                                            </td>
+                                            <td colspan="3" class="py-5">
+                                                <div class="form-check text-start">
+                                                    <input type="checkbox"
+                                                           class="form-check-input bg-primary border-0"
+                                                           id="Shipping-1"
+                                                           name="Shipping-1"
+                                                           value="Shipping">
+                                                    <label class="form-check-label" for="Shipping-1">Free Shipping</label>
+                                                </div>
+                                                <div class="form-check text-start">
+                                                    <input type="checkbox"
+                                                           class="form-check-input bg-primary border-0"
+                                                           id="Shipping-2"
+                                                           name="Shipping-1"
+                                                           value="Shipping">
+                                                    <label class="form-check-label" for="Shipping-2">Flat rate: $15.00</label>
+                                                </div>
+                                                <div class="form-check text-start">
+                                                    <input type="checkbox"
+                                                           class="form-check-input bg-primary border-0"
+                                                           id="Shipping-3"
+                                                           name="Shipping-1"
+                                                           value="Shipping">
+                                                    <label class="form-check-label" for="Shipping-3">Local Pickup: $8.00</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"></th>
+                                            <td class="py-5">
+                                                <p class="mb-0 text-dark text-uppercase py-3">TOTAL</p>
+                                            </td>
+                                            <td class="py-5"></td>
+                                            <td class="py-5"></td>
+                                            <td class="py-5">
+                                                <div class="py-3 border-bottom border-top">
+                                                    <p class="mb-0 text-dark">{{ cart.get_product_total }}원</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                                <div class="col-12">
+                                    <div class="form-check text-start my-3">
+                                        <input type="checkbox"
+                                               class="form-check-input bg-primary border-0"
+                                               id="Transfer-1"
+                                               name="Transfer"
+                                               value="Transfer">
+                                        <label class="form-check-label" for="Transfer-1">Direct Bank Transfer</label>
+                                    </div>
+                                    <p class="text-start text-dark">
+                                        Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                                <div class="col-12">
+                                    <div class="form-check text-start my-3">
+                                        <input type="checkbox"
+                                               class="form-check-input bg-primary border-0"
+                                               id="Payments-1"
+                                               name="Payments"
+                                               value="Payments">
+                                        <label class="form-check-label" for="Payments-1">Check Payments</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                                <div class="col-12">
+                                    <div class="form-check text-start my-3">
+                                        <input type="checkbox"
+                                               class="form-check-input bg-primary border-0"
+                                               id="Delivery-1"
+                                               name="Delivery"
+                                               value="Delivery">
+                                        <label class="form-check-label" for="Delivery-1">Cash On Delivery</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
+                                <div class="col-12">
+                                    <div class="form-check text-start my-3">
+                                        <input type="checkbox"
+                                               class="form-check-input bg-primary border-0"
+                                               id="Paypal-1"
+                                               name="Paypal"
+                                               value="Paypal">
+                                        <label class="form-check-label" for="Paypal-1">Paypal</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                                <!--dev_26-->
+                                {% comment %} <input type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" value="Place Order">
+                                </input> {% endcomment %}
+                                <button type="button"
+                                        id="cardPay"
+                                        data-pg="html5_inicis.INIpayTest"
+                                        data-pay="card"
+                                        class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary request-pay"
+                                        value="KG 이니시스">KG 이니시스</button>
+                                <!--dev_26_2 카카오페이-->
+                                <button type="button"
+                                        id="kakaoPay"
+                                        data-pg="kakaopay"
+                                        data-pay="card"
+                                        class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary request-pay"
+                                        value="카카오페이">카카오페이</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--dev_26_2-->
+                    <input type="hidden" name="imp_uid" id="imp_uid">
+                    <input type="hidden" name="paid_amount" id="paid_amount">
+                </form>
+            </div>
+        </div>
+    {% endblock content %}
+    {% block footer %}
+        {% include "layout/footer.html" %}
+    </div>
+{% endblock footer %}
+{% block script %}
+    <script>
+        $(document).on('click','.request-pay',function(e){
+            //dev_26_2
+            e.preventDefault(); // 기본 동작 막기 (페이지 이동 방지)
+
+            //data-pg="html5_inicis.INIpayTest"
+            //data-pay="card"
+            let pg = $(this).data('pg')
+            let payMethod = $(this).data('pay')
+            let priceTotals = {{ cart.get_product_total }} //cart 에 있는 함수 호출
+
+            let impCode = 'imp60282883' //상점번호
+            
+            IMP.init(impCode); //고객사 식별코드를 통해 결제 모듈 초기화
+            IMP.request_pay(  //결제모듈 팝업 띄워줌
+            {   
+                pg:pg,
+                pay_method: payMethod,
+                //merchant_uid: `payment-${crypto.randomUUID()}`, // 주문번호 생성(생략시 포트원에서 자동생성)
+                name: "장바구니 주문", //결제창에 노출될 상품명
+                amount: 100,//테스트를 위하여 100원으로 설정
+                buyer_email:'{{user.email}}', //로그인된 유저만 접근할수 있는 페이지 이므로 user객체를 바로 쓸수 있음
+                buyer_name: '{{user.username}}', //구매자 이름
+                buyer_tel: "010-4242-4242",
+                buyer_addr: "서울특별시 강남구 신사동",
+                buyer_postcode: "01181",
+            },
+            function (response) {
+                // 결제 종료 시 호출되는 콜백 함수
+                // response.imp_uid 값으로 결제 단건조회 API를 호출하여 결제 결과를 확인하고,
+                // 결제 결과를 처리하는 로직을 작성합니다.
+                // 결제 성공시의 로직
+                if(response.success){
+                    console.log(response)
+                    //alert("결제성공")
+                    
+                    $("#imp_uid").val(response.imp_uid);
+                    $("#paid_amount").val(response.paid_amount);
+                    //폼전송 <form id="payment-form"
+                    $("#payment-form").submit()
+                                      
+
+
+                }else{
+                    alert("결제실패")
+                }
+
+            });
+        });
+    </script>
+{% endblock %}
+
+                    {% comment %}
+                    // 결제 성공 시 로직
+                    //1.주문 정보 저장을 위해 ajax 요청
+                    //2.서버에서 결제금액과 주문금액(세션에 저장되어있는)이 일치하는지 확인
+                    //3.일치하면 주문 정보 및 결제정보 저장
+                    $.ajax({
+                        type:'POST',
+                        url:"{% url 'payment:payment_process'  %}",
+                        data:{
+                            imp_uid : response.imp_uid,
+                            paid_amount : response.paid_amount,
+                            csrfmiddlewaretoken:'{{csrf_token}}',
+                            action :'post'
+                        },
+                        success: function(response){
+                            console.log(response)
+                            if(response == "SUCCESS"){
+                                alert("결제가 완료되었습니다")
+                                location.href = "/" // 자바 스크립트에서의 리다이렉트
+                            }else{
+                                alert('결제에 실패하였습니다');
+                                location.reload()
+                            }
+                        },
+                        error: function(e){
+                            alert("결제에 실패하였습니다")
+                            console.log(e)
+                        }
+                    });     
+                    {% endcomment %}             

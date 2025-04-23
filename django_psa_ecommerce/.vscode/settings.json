@@ -1,0 +1,24 @@
+{
+    "[python]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.defaultColorDecorators": "auto",
+        "editor.formatOnType": true,
+        "editor.wordBasedSuggestions": "off",
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true
+    },
+    "[html][django-html][handlebars][hbs][mustache][jinja][jinja-html][nj][njk][nunjucks][twig]": {
+        "editor.defaultFormatter": "monosans.djlint"
+    },
+
+    "python.defaultInterpreterPath": "C:\\Users\\sua07\\anaconda3\\envs\\env_django\\python.exe",
+    "python.languageServer": "Pylance",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.indexing": true,
+    "python.analysis.completeFunctionParens": true,
+    "python.analysis.diagnosticMode": "workspace",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportAttributeAccessIssue": "none"
+    },
+    "djlint.ignore": ["T002", "T003", "T032", "T001", "D018", "H006", "H012", "H013", "H014", "H030", "H031"]
+}
