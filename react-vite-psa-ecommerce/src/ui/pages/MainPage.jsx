@@ -1,11 +1,5 @@
-import React from 'react'
-
-const MainPage = () => {
-  return (
-    <div>
-      <h1>메인페이지입니다. 안녕하세요</h1>
-    </div>
-  )
+const MainPage = ()=>{
+  return <div>메인페이지 입니다. 안녕하세요</div>
 }
 
 export default MainPage
