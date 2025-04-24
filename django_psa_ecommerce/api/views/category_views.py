@@ -254,41 +254,41 @@ class CategoryGenericView(RetrieveUpdateDestroyAPIView):
             status=status.HTTP_204_NO_CONTENT,
         )
 
-
+# dev_3_fruits
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySimpleSerializer
 
-    # http://127.0.0.1:8000/api/categories/?search=%EC%9E%90%EB%B0%94
-    # 검색 필터  사용
-    filter_backends = [filters.SearchFilter]
-    search_fields = ["name"]  # ?search=검색어
+    # # http://127.0.0.1:8000/api/categories/?search=%EC%9E%90%EB%B0%94
+    # # 검색 필터  사용
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ["name"]  # ?search=검색어
 
-    # http://127.0.0.1:8000/api/categories/?ordering=name
-    # 정렬 필터 사용
-    filter_backends = [filters.OrderingFilter]
-    search_fields = ["name"]  # ?search=검색어
+    # # http://127.0.0.1:8000/api/categories/?ordering=name
+    # # 정렬 필터 사용
+    # filter_backends = [filters.OrderingFilter]
+    # search_fields = ["name"]  # ?search=검색어
 
-    # http://127.0.0.1:8000/api/categories/1/products/ 라는 URL로 호출
-    # detail=True    /api/resource/<pk>/custom/    특정 객체에 대해 작동 (PK 필요)
-    # detail=False    /api/resource/custom/    전체 또는 리스트 대상 (PK 불필요)
-    # @action을 통해 url과 매핑
-    # detail이 true이면 /categories/<pk>/ false면 /categories/ + products/
-    @action(detail=True, methods=["get"])
-    def products(self, request, pk=None):
-        category = self.get_object()
-        products = category.products.all()
-        data = [{"name": p.name, "price": p.price} for p in products]
-        return Response({"category": category.name, "products": data})
+    # # http://127.0.0.1:8000/api/categories/1/products/ 라는 URL로 호출
+    # # detail=True    /api/resource/<pk>/custom/    특정 객체에 대해 작동 (PK 필요)
+    # # detail=False    /api/resource/custom/    전체 또는 리스트 대상 (PK 불필요)
+    # # @action을 통해 url과 매핑
+    # # detail이 true이면 /categories/<pk>/ false면 /categories/ + products/
+    # @action(detail=True, methods=["get"])
+    # def products(self, request, pk=None):
+    #     category = self.get_object()
+    #     products = category.products.all()
+    #     data = [{"name": p.name, "price": p.price} for p in products]
+    #     return Response({"category": category.name, "products": data})
 
-    # GET   /api/categories/?search=검색어      쿼리 스트링 방식
-    # GET   /api/categories/{search}            restful 방식
-    # 검색 기능 추가 (쿼리 파라미터 : ?search=검색어)
-    def get_gueryset(self):
-        queryset = Category.objects.all()
-        search = self.request.query_params.get("search")
+    # # GET   /api/categories/?search=검색어      쿼리 스트링 방식
+    # # GET   /api/categories/{search}            restful 방식
+    # # 검색 기능 추가 (쿼리 파라미터 : ?search=검색어)
+    # def get_gueryset(self):
+    #     queryset = Category.objects.all()
+    #     search = self.request.query_params.get("search")
 
-        if search:
-            queryset = queryset.filter(name__icontains=search)
+    #     if search:
+    #         queryset = queryset.filter(name__icontains=search)
 
-        return queryset
+    #     return queryset

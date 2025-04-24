@@ -7,10 +7,10 @@ import eslintPluginImport from 'eslint-plugin-import'
 export default [
   // 프로젝트의 빌드 폴더(예: dist) 무시
   { ignores: ['dist'] },
-
+  
   {
     // .js, .jsx 파일에 대한 설정
-    files: ['*/.{js,jsx,ts,tsx}'],
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       globals: globals.browser,
@@ -28,7 +28,7 @@ export default [
     rules: {
       // 기본 eslint 규칙
       ...js.configs.recommended.rules,
-
+      
       // React Hooks 규칙
       ...reactHooks.configs.recommended.rules,
 
@@ -58,7 +58,7 @@ export default [
       },
       'import/resolver': {
         alias: {
-          map: [['@', './src']], // @ alias로 src/ 경로를 사용하도록 설정
+          map: [['@', './src']], // `@` alias로 src/ 경로를 사용하도록 설정
           extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
       },

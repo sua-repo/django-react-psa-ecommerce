@@ -1,0 +1,11 @@
+// jsconfig.json
+//dev_1 오토임포트를 위하여
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+  "include": ["src"]
+}
