@@ -9,8 +9,8 @@ const Products = () => {
   const [categories,setCategories] = useState([])
   
   
-  // useEffect는 비동기 통신이 안 됨
-  // 비동기 통신 하고 싶을 경우 useEffect 안에 함수를 만들어서 해당 함수 호출을 하는 형식으로 비동기 통신을 함
+  // useEffect는 동기 통신이 안 됨
+  // 동기 통신 하고 싶을 경우 useEffect 안에 함수를 만들어서 해당 함수 호출을 하는 형식으로 동기 통신을 함
 
 
   // 빈 배열 : 처음 렌더링 될 때 한 번만 호출
