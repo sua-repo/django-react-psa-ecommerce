@@ -1,96 +1,48 @@
+
 from django.test import TestCase
-import pickle
+from django.contrib.auth.hashers import make_password, check_password
+from django.core.signing import Signer, BadSignature
 
-# Create your tests here.
+class HashEncryptionTestCase(TestCase) : 
 
+    def test_one_way_hash(self) : 
+        # 단방향 해시 테스트
+        original_password = "1234"
 
-# dev_28 시리얼라이제이션의 이해
+        # 비밀번호 해시
+        hashed_password = make_password(original_password)
+        print("암호화 확인 :", hashed_password)
 
+        # 해시된 값은 원본과 다름
+        self.assertNotEqual(original_password, hashed_password) # 두 개가 달라야 함
 
-def add_view(num1, num2):
-    return num1 + num2
+        # check_password로만 원본과 같은 지 검증 가능
+        isTrue = check_password(original_password, hashed_password)
+        print(isTrue)
 
+    # 서명(signing) 테스트 코드
 
-def suv_view(num1, num2):
-    return num1 - num2
+    # 서명된 값: my-secret-data:bDMOijmfGwA6uqlTYNhj-A5d61Lo933w02gZ3Wc3cZI
+    # 복원된 값 my-secret-data
+    # 원본 데이터 --[HMAC-SHA256+base64]--> 서명(signature)
+    # => 저장: "원본:서명"
 
+    # 검증할 때는:
+    # "원본"을 다시 서명 --> 비교 --> 다르면 BadSignature 예외
+    
+    def test_signing(self) : 
+        signer = Signer()
 
-class ObjectAPITest(TestCase):
-    def setUp(self):
-        pass
+        # 데이터에 서명 
+        # sign()
+        # value에 대해 HMAC-SHA256 해시 생성
+        # 해시를 base64 인코딩
+        # 원본 + 해시를 합쳐서 리턴
+        original_value = "my-secret-data"
 
-    def test_path(self):
+        signed_value = signer.sign(original_value)
+        print("서명된 값 :", signed_value)
 
-        dict = {
-            "products": add_view,
-            "categories": suv_view,
-        }
-        url = "products"
-
-        print(dict[url](1, 2))
-
-        url = "sub"
-        print(dict[url](1, 2))
-
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Category
-from .serializers import CategorySerializer, CategorySimpleSerializer
-
-
-class GenericAPIView(APIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    simple_serializer_class = CategorySimpleSerializer
-
-    def get_queryset(self):
-        return self.queryset
-
-    def get_serializer(self, *args, **kwargs):
-        return self.serializer_class(*args, **kwargs)
-
-    def get_simple_serializer(self, *args, **kwargs):
-        return self.simple_serializer_class(*args, **kwargs)
-
-    def get(self, request):
-        categories = self.get_queryset()
-        serializer = self.get_serializer(categories, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = self.get_simple_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def put(self, request):
-        # 예: id를 request에서 받았다고 가정
-        category_id = request.data.get("id")
-        try:
-            category = self.get_queryset().get(id=category_id)
-        except Category.DoesNotExist:
-            return Response(
-                {"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-
-        serializer = self.get_simple_serializer(category, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request):
-        category_id = request.data.get("id")
-        try:
-            category = self.get_queryset().get(id=category_id)
-            category.delete()
-            return Response(
-                {"message": "Category deleted"}, status=status.HTTP_204_NO_CONTENT
-            )
-        except Category.DoesNotExist:
-            return Response(
-                {"error": "Category not found"}, status=status.HTTP_404_NOT_FOUND
-            )
+        # 서명된 값을 검증 및 복원
+        unsigned_value = signer.unsign(signed_value)
+        print("복원된 값 :", unsigned_value)

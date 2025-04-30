@@ -33,7 +33,7 @@ class Product(models.Model):
     )
 
     is_sale = models.BooleanField(default=False)  # dev_6
-    sale_price = models.IntegerField(default=0)  # dev_6
+    sale_price = models.IntegerField(default=0, blank=True, null=True)  # dev_6
 
     def __str__(self):
         return self.name
