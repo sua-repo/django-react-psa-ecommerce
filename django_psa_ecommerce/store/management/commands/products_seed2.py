@@ -6,7 +6,6 @@ import os
 import requests
 from django.core.files import File
 from django.conf import settings
-from django.conf import settings
 from decouple import config  # 추가
 
 UNSPLASH_ACCESS_KEY = config("UNSPLASH_ACCESS_KEY")  # 여기에 발급받은 키 입력
@@ -53,17 +52,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(f"❌ 에러 발생: {e}"))
         return None
 
-    # dev_4_fruits
-    def get_random_existing_image(self, image_dir):
-        """
-        이미지 디렉토리에서 랜덤 이미지 경로를 반환.
-        """
-        #"image_dir" 폴더 안에 있는 .jpg 확장자를 가진 모든 이미지 파일의 경로 리스트를 반환
-        existing_images = glob.glob(os.path.join(image_dir, "*.jpg"))
-        if existing_images:
-            return random.choice(existing_images)
-        return None
-
     def seed_products(self):
         image_dir = os.path.join(settings.MEDIA_ROOT, "upload", "product")
 
@@ -87,20 +75,12 @@ class Command(BaseCommand):
                 image_filename = f"{product_name}.jpg"
                 image_path = os.path.join(image_dir, image_filename)
 
-                # 이미지 다운로드 시도
                 if not os.path.exists(image_path):
                     image_path = self.download_unsplash_image(
                         product_name, image_filename, image_dir
                     )
-
-                # 실패 시 대체 이미지 사용
-                if not image_path or not os.path.exists(image_path):
-                    image_path = self.get_random_existing_image(image_dir)
-                    
-                    if image_path:
-                        image_filename = os.path.basename(image_path)
-
-                        
+                
+                #이미지 넣는 부분 => 이부분 참고 할것
                 if image_path and os.path.exists(image_path):
                     with open(image_path, "rb") as f:
                         product.image.save(image_filename, File(f), save=True)
