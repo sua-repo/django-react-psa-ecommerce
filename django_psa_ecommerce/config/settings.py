@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "rest_framework",  # dev_28 : DRF
     "api",  # dev_28
     "corsheaders",  # dev_3_fruits
+    "djoser"    # dev_5_fruits
 ]
 
 MIDDLEWARE = [
@@ -231,4 +232,50 @@ SOCIALACCOUNT_PROVIDERS = {
             "prompt": "select_account",  # 추가 간편로그인을 지원해줌
         },
     }
+}
+
+
+# dev_5_fruits
+
+# # 대략적인 구현
+# class JWTAuthentication(BaseAuthentication) : 
+#     def authenticate(self, request) : 
+#         header = self.get_header(request)    # Authorization 헤더 추출
+#         raw_token = self.get_raw_token(header)  # "Bearer abc.def.ghi" → 토큰만 추출
+#         validated_token = self.get_validated_token(raw_token)   # 유효성 검사
+#         user = self.get_user(validated_token)   # payload에서 user_id를 추출 → User 객체
+#         return (user, validated_token)
+    
+    
+#J WTAuthentication은 다음을 자동으로 처리
+# HTTP 요청의 Authorization 헤더에서 JWT 토큰을 추출
+# 그 토큰을 디코딩해서 유효한지 검사
+# 토큰에서 사용자 ID를 추출하고, 해당 사용자를 DB에서 가져옴
+# 해당 사용자를 request.user에 할당
+# DRF에서 모든 API 뷰가 사용할 기본 인증 클래스들을 지정
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=3), # timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+# djoser 커스터마이징 세팅
+DJOSER = {
+    "USER_ID_FIELD": "id",
+    "LOGIN_FIELD": "username",  # 또는 email
+    "SERIALIZERS": {
+        "user_create": "accounts.serializers.UserCreateSerializer",
+        "user": "accounts.serializers.UserSerializer",
+        "current_user": "accounts.serializers.UserSerializer",
+    },
+    "CREATE_SESSION_ON_LOGIN": True,  # 로그인하면 세션도 생성됨
 }
