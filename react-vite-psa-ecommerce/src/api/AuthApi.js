@@ -11,14 +11,14 @@ import http from "./HttpCommon";
 // # POST   /auth/users/            회원가입
 // # GET /  /auth/users/me/         현재 로그인된 사용자 조회
 
-export const loginUser = (username, password) => {
-    return http.post("/api/auth/jwt/create/", {
+export const loginUser = (username,password) => {
+    return http.post("/api/auth/jwt/create/",{
         username,
         password
     });
-}
+};
 
-// 현재 로그인 된 사용자 조회
+//현재 로그인된 사용자 조회
 export const getCurrentUser = () => {
-    return http.post("/api/auth/users/me/");
-}
+    return http.get("/api/auth/users/me/");
+};

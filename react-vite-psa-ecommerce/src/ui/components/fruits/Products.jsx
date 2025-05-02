@@ -25,7 +25,6 @@ const Products = () => {
         getProducts()
         .then((res)=>{
             console.log(res.data)
-
             setProducts(res.data)
         })
         .catch((err)=>{console.log(err)})
@@ -65,7 +64,7 @@ return(
               </li>
               
               {categories && categories.map((category,index)=>(
-                <li className="nav-item">
+                <li className="nav-item" key={category.id}>
                   <a
                     className="d-flex py-2 m-2 bg-light rounded-pill"
                     data-bs-toggle="pill"

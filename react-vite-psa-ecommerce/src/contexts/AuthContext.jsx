@@ -1,4 +1,4 @@
-import { loginUser } from "@/api/AuthApi";
+import { getCurrentUser, loginUser } from "@/api/AuthApi";
 import { createContext, useContext, useState }  from "react";
 
 const AuthContext = createContext();
@@ -20,8 +20,9 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem("refresh", refresh)
             setAccessToken(access)
 
-            // 로그인이 도니 후 로그인 정보를 받아서 어디서든 로드인 정보를 공유할 수 있게 함
-            // await getUser() 구현 예정
+            // 로그인이 된 후 로그인 정보를 받아서 어디서든 로드인 정보를 공유할 수 있게 함
+            // await getUser() 구현 예정 → 구현 완료
+            await getUser()
         }
         catch(error) {
             console.error("로그인 실패", error)
