@@ -1,5 +1,6 @@
 import { getCategories } from "@/api/CategoryApi"
 import { getProducts } from "@/api/ProductApi"
+import { useCart } from "@/contexts/CartContext"
 import { useEffect, useState } from "react"
 
 // dev_2_fruits
@@ -9,7 +10,9 @@ const Products = () => {
     // dev_4_fruits
     const [selectedCategory,setSelectedCategory] = useState("전체")
     const [products,setProducts] = useState([])
-     
+    
+    // dev_6_fruits
+    const {addToCart} = useCart()
     
     useEffect(()=>{
         // 카테고리 가져오기
@@ -88,7 +91,7 @@ return(
             <div className="row g-4">
               <div className="col-lg-12">
                 <div className="row g-4">
-                  {/* dev_4_Fruit */}
+                  {/* dev_4_fruits */}
                   {
                     filterProucts.map((product)=>(
                     <div key={product.id} className="col-md-6 col-lg-4 col-xl-3">
@@ -117,13 +120,14 @@ return(
                             <p className="text-dark fs-5 fw-bold mb-2">
                               ${product.price} / kg
                             </p>
-                            <a
-                              href="#"
+                            {/* dev_6_fruits */}
+                            <button
+                              onClick={() => addToCart(product)}
                               className="btn border border-secondary rounded-pill px-3 text-primary"
                             >
                               <i className="fa fa-shopping-bag me-2 text-primary" />{" "}
                               Add to cart
-                            </a>
+                            </button>
                           </div>
                         </div>
                     </div>

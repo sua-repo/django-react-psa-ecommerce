@@ -13,9 +13,9 @@ import jwt
 
 class ApiTest(TestCase):
     def test_jwt_decode_access_token(self):
-        access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2MzE5NjY2LCJpYXQiOjE3NDYwNjA0NjYsImp0aSI6IjQxY2FkMzQyYTljNTQ1YTdhYWMwY2Q3OWU2ODk2MjEyIiwidXNlcl9pZCI6MX0.fm7PXtiftjawMXSwQ2qYC5mC4Qon0-qwsn7BAS8Io0w"
+        access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2ODQ0MzUyLCJpYXQiOjE3NDY1ODUxNTIsImp0aSI6IjlhMGQ0NjVjZWQ2MDRkZmZhM2FjZDM5YTNmN2Q5NDkyIiwidXNlcl9pZCI6MX0.bbz3MK4n5Aem6dlwgns9-Cn-8l86r-1lHw2IPlWQH-Q"
 
-        refresh_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NjY2NTI2NiwiaWF0IjoxNzQ2MDYwNDY2LCJqdGkiOiI1NTg2MmRkYzI1ODU0OTU2OTdmZjg2OTFjYjY4Y2NmOCIsInVzZXJfaWQiOjF9.TVOdG5OjsF3ig2oInA9aMKwUxI5TL6W-cdKqD_w4GDk"
+        refresh_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NzE4OTk1MiwiaWF0IjoxNzQ2NTg1MTUyLCJqdGkiOiI4OGVjMGEwY2ViMzc0OTZlOWQ3YWQ2YjNjMTQxMTBkNCIsInVzZXJfaWQiOjF9.YjYcbNdYMNtk30Uk0LkJRLZ0ZntxqhBrd9NDb88VXzc"
 
         print("\n▶ ACCESS TOKEN 디코딩 결과:")
         access_decoded = jwt.decode(access_token, options={"verify_signature": False})
