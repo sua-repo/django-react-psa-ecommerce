@@ -63,6 +63,7 @@ urlpatterns = [
     path("auth/", include("djoser.urls.jwt")),  # JWT 로그인 / 로그아웃, 토큰 갱신 등
 
     # dev_6_fruits
+    path("cart/", cart_views.CartAPIView.as_view()),
     path("cart/merge/", cart_views.CartMergeAPIView.as_view()),
 
 
