@@ -1,10 +1,11 @@
 from decimal import Decimal
 import json
-from requests import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from store.models import Product
 from api.serializers.product_serializers import ProductSerializer
+from rest_framework.response import Response
+from cart.cart import CartDRF
 
 # ✅ 카트 API endpoint 예시:
 # HTTP       Method           Endpoint     기능
@@ -63,14 +64,54 @@ class CartAPIView(APIView) :
         )
 
     def post(self, request) : 
-        pass
+        """
+            장바구니에 상품 추가
+        """
+
+        product_id = request.data.get("product_id")
+        quantity = request.data.get("quantity")
+
+        cart = CartDRF(request)
+
+        try :
+            product = Product.objects.get(id=product_id)
+            price = product.sale_price if product.is_sale else product.price
+
+            cart.add_to_old_cart(request.user, product.id, price, quantity)
+            
+            return Response({"message" : "상품이 장바구니에서 제거되었습니다."})
+        
+        except Product.DoesNotExist : 
+            return Response({"error" : "상품이 존재하지 않습니다."}, status=404)
+
+            
+
 
     def put(self, request) : 
         pass
 
     def delete(self, request) : 
-        pass
+        """
+            old_cart에서 상품 제거 또는 전체 삭제
+        """
+    
+        user = request.user
+        print("user =========", user)
 
+        product_id = request.data.get("product_id")
+        print("product_id =========", product_id)
+
+        cart = CartDRF(request)
+
+        # 특정 상품 제외
+        if product_id :
+            try :
+                product = Product.objects.get(id=product_id)
+                cart.remove_from_old_cart(user, product_id)
+                return Response({"message" : "상품이 장바구니에서 제거되었습니다."})
+            
+            except Product.DoesNotExist : 
+                return Response({"error" : "상품이 존재하지 않습니다."}, status=404)
 
 #dev_6_fruits
 # POST       /api/cart/merge      장바구니에 상품 추가

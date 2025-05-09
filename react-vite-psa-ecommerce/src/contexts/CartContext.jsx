@@ -1,5 +1,5 @@
 // dev_6_fruits
-import { mergeCart } from "@/api/CartApi";
+import { addCart, deleteCart, getCarts, mergeCart } from "@/api/CartApi";
 import { useAuth } from "./AuthContext";
 import { createContext, useState, useEffect, useContext } from "react";
 
@@ -7,8 +7,11 @@ const CartContext = createContext()
 
 export const CartProvider = ({ children }) => {
     // 화면 관리용 변수
-    const [cartItems, setCartItems] = useState({})
+    const [cartItems, setCartItems] = useState({});
     const {user} = useAuth();
+
+    // dev_7_fruits
+    const [userCart, setUserCart] = useState(null);
 
     // 비회원일 때 카트를 localStorage에 저장
     // cartItems, user 변수에 변화가 생기면 해당 콜백함수 호출
@@ -64,6 +67,11 @@ export const CartProvider = ({ children }) => {
                 };
             });
             setCartItems(cartData)
+
+            // dev_7_fruits
+            if(user){
+                setUserCart(response.data)
+            }
         }
         catch (error) {
             console.error("❌ 장바구니 불러오기 실패", error);
@@ -94,13 +102,22 @@ export const CartProvider = ({ children }) => {
     }
 
     // 장바구니 추가
-    const addToCart = (product, quantity=1) => {
+    const addToCart = async (product, quantity=1) => {
         const productId = product.id
         const price = product.price
 
         if (user) {
+            try {
+                const response = await addCart(product.id, quantity)
+                console.log(response)
 
+                loadCart()
+            }
+            catch (error) {
+                console.error("서버 장바구니 추가 실패", error);
+            }
         }
+
         else {
             setCartItems( (prev) => {
                 const existing = prev[productId]
@@ -131,14 +148,30 @@ export const CartProvider = ({ children }) => {
 
     }
 
+    // dev_7_fruits
+    // 항목 제거
+    const removeFromCart = async (productId) => {
+        if (user) {
+            try {
+                await deleteCart(productId);
+                await loadCart();   // 서버에서 카트를 다시 끌고 오면서 화면 갱신
+                console.log("✅ 상품이 장바구니에서 제거되었습니다.")
+            }
+            catch (error) {
+                console.error("❌ 서버 장바구니 삭제 실패", error)
+            }
+        }
+    }
+
     const value = {
+        removeFromCart, // dev_7_fruits
+        userCart,   // dev_7_fruits
         addToCart,
         cartItems,
         getTotalItems,
     }
 
-    return <CartContext Provider 
-                value={value}>{ children }</CartContext>
+    return <CartContext Provider value={value}>{ children }</CartContext>
 }
 
 export const useCart = () => useContext(CartContext)

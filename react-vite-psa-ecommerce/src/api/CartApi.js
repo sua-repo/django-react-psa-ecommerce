@@ -22,3 +22,24 @@ export const mergeCart = (guestCart) => {
     });
 };
 
+// 카트 상품 제거
+export const deleteCart = (product_id=null) => {
+  const config = {
+    data : {},
+  };
+
+  if (product_id) {
+    config.data.product_id = product_id;
+  }
+
+  return http.delete("/api/cart/", config);
+}
+
+// 카트 상품 추가
+export const addCart = (product_id, quantity) => {
+
+  return http.post("/api/cart/", {
+    product_id,
+    quantity
+  });
+}

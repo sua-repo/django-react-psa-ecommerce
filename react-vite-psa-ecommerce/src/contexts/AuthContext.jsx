@@ -1,5 +1,5 @@
 import { getCurrentUser, loginUser } from "@/api/AuthApi";
-import { createContext, useContext, useState }  from "react";
+import { createContext, useContext, useEffect, useState }  from "react";
 
 const AuthContext = createContext();
 
@@ -8,6 +8,18 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [accessToken, setAccessToken] = useState(localStorage.getItem("access"));
+
+    // 새로고침 시 access token 있으면 자동으로 유저 정보 가져오기
+    useEffect(() => {
+        const access = localStorage.getItem("access");
+
+        // access가 바뀌는 경우에도 user 없으면 getUser 실행
+        if (access && !user) {
+        getUser();  // 사용자 정보 받아오기
+        }
+
+    }, [accessToken]);
+
 
     const login = async (username, password) => {
         try {
@@ -48,6 +60,9 @@ export const AuthProvider = ({ children }) => {
         setAccessToken(null);
         localStorage.removeItem("access")
         localStorage.removeItem("refresh")
+
+        // 로그아웃 시 카트도 삭제
+        localStorage.removeItem("cart");
     }
 
     const value = {

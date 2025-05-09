@@ -1,3 +1,4 @@
+import json
 from django.conf import settings
 from django.contrib.sessions.models import Session
 from django.contrib.sessions.backends.db import SessionStore
@@ -137,3 +138,58 @@ class Cart:  # 카트 클래스 생성
 
             except Exception as e:
                 print(f"❌ 복호화 실패 - 세션 키: {session.session_key}, 오류: {e}")
+
+# dev_7_fruits
+# ✅ old_cart 데이터 
+# {
+#   "34": {"quantity": 1, "price": "10000.00"}, 
+#   "33": {"quantity": 1, "price": "12000.00"}
+# }
+
+class CartDRF : 
+    def __init__(self, request) : 
+        self.request = request
+    
+    # 상품 전체 삭제 메서드
+    def remove_from_old_cart(self, user, product_id) :
+        old_cart = user.old_cart or "{}"
+        cart = json.loads(old_cart)
+
+        product_id = str(product_id)
+
+        if product_id in cart : 
+            del cart[product_id]
+            user.old_cart = json.dumps(cart)
+            user.save()
+
+    # 상품 추가 메서드 
+    def add_to_old_cart(self, user, product_id, price, quantity=1) : 
+        """
+            사용자의 old_cart에 상품을 추가합니다.
+            product_id : str or int
+            price L: Decimal or str
+            quantity : int
+        """
+
+        # 기존 cart 불러오기 (없으면 빈 dict)
+        old_cart = user.old_cart or "{}"
+        cart = json.loads(old_cart)
+
+        product_id = str(product_id)
+        price = str(price)
+
+        # 이미 상품이 있으면 수량 증가
+        if product_id in cart : 
+            cart[product_id]["quantity"] += quantity
+        
+        # 카트 안에 상품 번호가 없으면 새로 생성
+        else :   
+            cart[product_id] = {
+                "quantity" : quantity,
+                "price" : price,
+            }
+
+        # 다시 JSON 문자열로 저장
+        user.old_cart = json.dumps(cart)
+        user.save()
+        

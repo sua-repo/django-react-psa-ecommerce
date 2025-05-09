@@ -71,9 +71,9 @@ const Header = () => {
     </div>
     <div className="container px-0">
       <nav className="navbar navbar-light bg-white navbar-expand-xl">
-        <a href="index.html" className="navbar-brand">
+        <Link to="/" className="navbar-brand">
           <h1 className="text-primary display-6">Fruitables</h1>
-        </a>
+        </Link>
         <button
           className="navbar-toggler py-2 px-3"
           type="button"
@@ -84,9 +84,9 @@ const Header = () => {
         </button>
         <div className="collapse navbar-collapse bg-white" id="navbarCollapse">
           <div className="navbar-nav mx-auto">
-            <a href="index.html" className="nav-item nav-link active">
+            <Link to="/" className="nav-item nav-link active">
               Home
-            </a>
+            </Link>
             <a href="shop.html" className="nav-item nav-link">
               Shop
             </a>
@@ -102,9 +102,9 @@ const Header = () => {
                 Pages
               </a>
               <div className="dropdown-menu m-0 bg-secondary rounded-0">
-                <a href="cart.html" className="dropdown-item">
+                <Link to="/cart" className="dropdown-item">
                   Cart
-                </a>
+                </Link>
                 <a href="chackout.html" className="dropdown-item">
                   Chackout
                 </a>
@@ -128,7 +128,8 @@ const Header = () => {
             >
               <i className="fas fa-search text-primary" />
             </button>
-            <a href="#" className="position-relative me-4 my-auto">
+            {/* dev_7_fruits */}
+            <Link to="/cart" className="position-relative me-4 my-auto">
               <i className="fa fa-shopping-bag fa-2x" />
               <span
                 className="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
@@ -137,7 +138,7 @@ const Header = () => {
                 {/* dev_6_fruits */}
                 { getTotalItems() }
               </span>
-            </a>
+            </Link>
             <a href="#" className="my-auto">
               <i className="fas fa-user fa-2x" />
             </a>
@@ -185,82 +186,6 @@ const Header = () => {
     </div>
   </div>
   {/* Modal Search End */}
-  {/* Hero Start */}
-  <div className="container-fluid py-5 mb-5 hero-header">
-    <div className="container py-5">
-      <div className="row g-5 align-items-center">
-        <div className="col-md-12 col-lg-7">
-          <h4 className="mb-3 text-secondary">100% Organic Foods</h4>
-          <h1 className="mb-5 display-3 text-primary">
-            Organic Veggies &amp; Fruits Foods
-          </h1>
-          <div className="position-relative mx-auto">
-            <input
-              className="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill"
-              type="number"
-              placeholder="Search"
-            />
-            <button
-              type="submit"
-              className="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100"
-              style={{ top: 0, right: "25%" }}
-            >
-              Submit Now
-            </button>
-          </div>
-        </div>
-        <div className="col-md-12 col-lg-5">
-          <div
-            id="carouselId"
-            className="carousel slide position-relative"
-            data-bs-ride="carousel"
-          >
-            <div className="carousel-inner" role="listbox">
-              <div className="carousel-item active rounded">
-                <img
-                  src={heroImg1}
-                  className="img-fluid w-100 h-100 bg-secondary rounded"
-                  alt="First slide"
-                />
-                <a href="#" className="btn px-4 py-2 text-white rounded">
-                  Fruites
-                </a>
-              </div>
-              <div className="carousel-item rounded">
-                <img
-                  src={heroImg2}
-                  className="img-fluid w-100 h-100 rounded"
-                  alt="Second slide"
-                />
-                <a href="#" className="btn px-4 py-2 text-white rounded">
-                  Vesitables
-                </a>
-              </div>
-            </div>
-            <button
-              className="carousel-control-prev"
-              type="button"
-              data-bs-target="#carouselId"
-              data-bs-slide="prev"
-            >
-              <span className="carousel-control-prev-icon" aria-hidden="true" />
-              <span className="visually-hidden">Previous</span>
-            </button>
-            <button
-              className="carousel-control-next"
-              type="button"
-              data-bs-target="#carouselId"
-              data-bs-slide="next"
-            >
-              <span className="carousel-control-next-icon" aria-hidden="true" />
-              <span className="visually-hidden">Next</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  {/* Hero End */}
 </>
 
   
