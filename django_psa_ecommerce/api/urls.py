@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
+
 # dev_28
 # from api.views import hello_world, hello_world_json, hello_world_drf
 from .views import base_views, product_views, category_views, cart_views
@@ -31,6 +32,16 @@ category_list = category_views.CategoryViewSet.as_view(
 category_detail = category_views.CategoryViewSet.as_view(
     {"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}
 )
+
+# dev_8_2_fruits
+# GET /api/payments/ – 전체 결제 내역
+# POST /api/payments/ – 결제 내역 생성
+# GET /api/payments/<id>/ – 단일 결제 조회
+# PUT/PATCH /api/payments/<id>/ – 수정
+# DELETE /api/payments/<id>/ – 삭제
+
+from api.views.payment_views import PaymentViewSet
+router.register("payments", PaymentViewSet)
 
 urlpatterns = [
     # path("hello-world/", base_views.hello_world),

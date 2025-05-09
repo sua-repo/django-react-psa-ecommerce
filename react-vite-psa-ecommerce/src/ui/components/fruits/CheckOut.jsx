@@ -1,6 +1,8 @@
 import { useCart } from '@/contexts/CartContext';
 import { formatCurrency, formatCurrencyWithWon } from '@/utils/format';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import RequestPay from '../payment/RequestPay';
 
 // dev_8_fruits
 const CheckOut = () => {
@@ -18,25 +20,27 @@ const CheckOut = () => {
 
     const handleChange = (event) => {
         const {name, value} = event.target;
-
-        // setShippingData({
-        //     full_name : '',
-        //     address1 : '',
-        //     city : '',
-        //     country : '',
-        //     zipcode : '',
-        //     phone : '',
-        //     email : '',
-        // });
-
-
-        // setShippingData((prev) => {
-        //     return( {...prev, [name] : value} )
-        // });
-
         setShippingData((prev) => ( {...prev, [name] : value} ));
     }
 
+    const navigate = useNavigate()
+
+    const handlePayment = async () => {
+        try { 
+            const result = await RequestPay(shippingData, userCart)
+            
+            if (result) {
+              alert("✅ 결제 및 주문이 성공적으로 완료되었습니다.")
+              console.log("===== 결제 완료 =====")
+              // clearCart() // 장바구니 비우기
+              navigate("/")   // 루트로 이동
+            }
+        }
+        catch (error) {
+            console.error("결제 실패했습니다.", error)
+        }
+    }
+    
   return (
     <>
       {/* Single Page Header start */}
@@ -318,8 +322,8 @@ const CheckOut = () => {
                   </div>
                 </div>
                 <div className="row g-4 text-center align-items-center justify-content-center pt-4">
-                  <button type="button" className="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">
-                    Place Order
+                  <button type="button" onClick={handlePayment} className="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">
+                    카카오페이
                   </button>
                 </div>
               </div>
