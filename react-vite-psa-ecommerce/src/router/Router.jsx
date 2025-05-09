@@ -4,6 +4,7 @@ import Login from '@/ui/components/login/Login'
 import Hero from '@/ui/components/Hero'
 import MainLayout from '@/ui/layouts/MainLayout'
 import { createBrowserRouter } from 'react-router-dom'
+import CheckOut from '@/ui/components/fruits/CheckOut'
 
 
 const routes = [
@@ -28,6 +29,13 @@ const routes = [
                 path:'cart',
                 element:<Cart></Cart>,
                 loader: () => '카트',
+            },
+
+            // dev_8_fruits
+            {
+                path:'checkout',
+                element:<CheckOut></CheckOut>,
+                loader: () => '체크아웃',
             }
         ]
         
