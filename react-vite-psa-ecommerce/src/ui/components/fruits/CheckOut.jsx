@@ -16,7 +16,7 @@ const CheckOut = () => {
         email : '',
     })
 
-    const {userCart} = useCart()
+    const {userCart, clearCart} = useCart()
 
     const handleChange = (event) => {
         const {name, value} = event.target;
@@ -32,7 +32,7 @@ const CheckOut = () => {
             if (result) {
               alert("✅ 결제 및 주문이 성공적으로 완료되었습니다.")
               console.log("===== 결제 완료 =====")
-              // clearCart() // 장바구니 비우기
+              clearCart() // 장바구니 비우기
               navigate("/")   // 루트로 이동
             }
         }
@@ -162,7 +162,7 @@ const CheckOut = () => {
                     </thead>
                     <tbody>
                         { userCart && userCart?.cart?.map( (item, index) => (
-                            <tr>
+                            <tr key={item.product.id ?? index}>
                                 <th scope="row">
                                 <div className="d-flex align-items-center mt-2">
                                     <img 

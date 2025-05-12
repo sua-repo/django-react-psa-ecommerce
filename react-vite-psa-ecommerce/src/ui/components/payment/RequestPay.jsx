@@ -23,6 +23,7 @@ const RequestPay = (shippingData, cart=null, pg="kakaopay", pay_method='card') =
             buyer_postcode: shippingData.zipcode,
     }
 
+    // 결제창 띄우기
     IMP.request_pay(data, async (rsp) => {
       
       if (rsp.success) {
@@ -31,7 +32,7 @@ const RequestPay = (shippingData, cart=null, pg="kakaopay", pay_method='card') =
         console.log("✅ 결제 성공", rsp)
         
         // 백엔드로 결제 검증 및 주문 요청 저장
-        const res = await createPayment(shippingData, rsp.imp_uid, rsp,paid_amount)
+        const res = await createPayment(shippingData, rsp.imp_uid, rsp.paid_amount)
         console.log("✅ 서버 처리 완료", res)
 
         resolve(true) // 성공 시 true 반환

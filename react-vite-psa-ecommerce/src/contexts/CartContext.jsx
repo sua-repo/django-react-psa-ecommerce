@@ -163,12 +163,32 @@ export const CartProvider = ({ children }) => {
         }
     }
 
+    // dev_8_2_fruits
+    // 카트 전체 비우기
+    const clearCart = async () => {
+
+        if (user) { // 로그인 되어있을 때
+            try {
+                await deleteCart()
+                setCartItems({})
+            }
+            catch (error) {
+                console.error("서버 장바구니 비우기 실패", error)
+            }
+        }
+        else {  // 로그인 안 되어있을 때
+            setCartItems({})
+            localStorage.removeItem("cart")
+        }
+    }
+
     const value = {
         removeFromCart, // dev_7_fruits
         userCart,   // dev_7_fruits
         addToCart,
         cartItems,
         getTotalItems,
+        clearCart
     }
 
     return <CartContext Provider value={value}>{ children }</CartContext>
