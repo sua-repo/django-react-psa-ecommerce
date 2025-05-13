@@ -37,3 +37,6 @@ class User(AbstractUser):
 
     # dev_23
     old_cart = models.CharField(max_length=2, blank=True, null=True)
+
+    # dev_9_1_fruits
+    profile_image = models.URLField(blank=True, null=True)
