@@ -14,4 +14,5 @@ urlpatterns = [
     path(
         "kakao_login_user/", views.kakao_login_user, name="kakao_login_user"
     ),  # dev_27
+    
 ]

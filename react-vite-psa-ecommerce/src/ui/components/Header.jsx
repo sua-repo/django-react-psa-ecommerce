@@ -1,24 +1,26 @@
-import { Link, Outlet } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 import heroImg1 from '@/assets/fruits/img/hero-img-1.png'
 import heroImg2 from '@/assets/fruits/img/hero-img-2.jpg'
 import { useAuth } from "@/contexts/AuthContext"
-import { useCart } from "@/contexts/CartContext"
+import { Link } from 'react-router-dom';
+import { useCart } from "@/contexts/CartContext";
 
 //dev_2_fruits
 const Header = () => {
-  
-  // dev_5_fruits
-  const {user, logout} = useAuth();
-  console.log(user)
 
-  const logoutHandle = () => {
-    logout();
+  //dev_5_fruits
+  const{user,logout} = useAuth();
+  console.log(user)
+  
+
+  const logoutHandle = () =>{
+    logout()
   }
 
-  // dev_6_fruits : 장바구니 카트 숫자
-  const {getTotalItems} = useCart()
+  //dev_6_fruits 장바구니 카트 숫자
+  const { getTotalItems} = useCart()
 
-  return (
+return (
         <>
   {/* Spinner Start */}
   {/* <div
@@ -41,7 +43,7 @@ const Header = () => {
           </small>
           <small className="me-3">
             <i className="fas fa-envelope me-2 text-secondary" />
-    
+            {/* dev_5_Fruit */}
             {user ? (
                   <span
                     className="text-white"
@@ -53,7 +55,7 @@ const Header = () => {
                 ) : (
                   <Link to="/login" className="text-white">로그인을 해주세요</Link>
             )}
-            
+
           </small>
         </div>
         <div className="top-link pe-2">
@@ -84,7 +86,7 @@ const Header = () => {
         </button>
         <div className="collapse navbar-collapse bg-white" id="navbarCollapse">
           <div className="navbar-nav mx-auto">
-            <Link to="/" className="nav-item nav-link active">
+            <Link to = "/" className="nav-item nav-link active">
               Home
             </Link>
             <a href="shop.html" className="nav-item nav-link">
@@ -136,7 +138,7 @@ const Header = () => {
                 style={{ top: "-5px", left: 15, height: 20, minWidth: 20 }}
               >
                 {/* dev_6_fruits */}
-                { getTotalItems() }
+                {getTotalItems()}
               </span>
             </Link>
             <a href="#" className="my-auto">
@@ -186,6 +188,7 @@ const Header = () => {
     </div>
   </div>
   {/* Modal Search End */}
+
 </>
 
   

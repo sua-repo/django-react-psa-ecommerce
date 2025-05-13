@@ -8,7 +8,7 @@ export const formatCurrency = (amount) => {
       maximumFractionDigits: 0,
     });
   };
-
+  
   // 숫자를 1,342,000원 형식으로 포맷
 export const formatCurrencyWithWon = (amount) => {
     const number = Math.floor(amount);

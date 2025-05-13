@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom"
 import paymentImg from '@/assets/fruits/img/payment.png'
 
-//dev_2_fruit
+//dev_2_fruits
 const Footer = () => {
     return (
     <>
@@ -135,7 +135,7 @@ const Footer = () => {
                 <p>Email: Example@gmail.com</p>
                 <p>Phone: +0123 4567 8910</p>
                 <p>Payment Accepted</p>
-                {/* dev_2_fruit */}
+                {/* dev_2_fruits */}
                 <img src={paymentImg} className="img-fluid" alt="" />
             </div>
             </div>

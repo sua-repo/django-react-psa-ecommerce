@@ -6,11 +6,11 @@ import { CartProvider } from './contexts/CartContext.jsx'
 
 //dev_1_fruits
 createRoot(document.getElementById('root')).render(
-  // dev_5_fruits : <AuthProvider>
-  // dev_6_fruits : <CartProvider>
+  //dev_5_fruits
+  //dev_6_fruits
   <AuthProvider>
-    <CartProvider>
+    <CartProvider>    
       <RouterProvider router={router}/>
-    </CartProvider>
-  </AuthProvider>
+    </CartProvider>   
+ </AuthProvider>
 )

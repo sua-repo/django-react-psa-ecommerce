@@ -3,19 +3,19 @@ import { getProducts } from "@/api/ProductApi"
 import { useCart } from "@/contexts/CartContext"
 import { useEffect, useState } from "react"
 
-// dev_2_fruits
+//dev_2_fruits
 const Products = () => {
 
     const [categories,setCategories] = useState([])
-    // dev_4_fruits
+    //dev_4_fruits
     const [selectedCategory,setSelectedCategory] = useState("전체")
     const [products,setProducts] = useState([])
     
-    // dev_6_fruits
+    //dev_6_fruits
     const {addToCart} = useCart()
     
     useEffect(()=>{
-        // 카테고리 가져오기
+        //카테고리 가져오기
         getCategories()
             .then((res)=>{
                 console.log(res)
@@ -23,18 +23,19 @@ const Products = () => {
             })
             .catch((err)=>{console.log(err)})
         
-        // dev_4_fruits
-        // 상품 가져오기
+        //dev_4_fruits
+        //상품 가져오기
         getProducts()
         .then((res)=>{
             console.log(res.data)
+
             setProducts(res.data)
         })
         .catch((err)=>{console.log(err)})
 
     },[])
 
-   // filter 함수의 리턴값을 배열임
+   //filter 함수의 리턴값을 배열임
    const filterProucts = 
     selectedCategory == "전체" ? products.filter((product) => product.image != null) : products.filter((product)=> product.category.name == selectedCategory && product.image ) 
    
@@ -67,7 +68,7 @@ return(
               </li>
               
               {categories && categories.map((category,index)=>(
-                <li className="nav-item" key={category.id}>
+                <li key={category.id} className="nav-item">
                   <a
                     className="d-flex py-2 m-2 bg-light rounded-pill"
                     data-bs-toggle="pill"
@@ -122,7 +123,7 @@ return(
                             </p>
                             {/* dev_6_fruits */}
                             <button
-                              onClick={() => addToCart(product)}
+                              onClick={()=> addToCart(product)}
                               className="btn border border-secondary rounded-pill px-3 text-primary"
                             >
                               <i className="fa fa-shopping-bag me-2 text-primary" />{" "}

@@ -1,7 +1,8 @@
-import http from "./HttpCommon";
+import http from './HttpCommon';
 
-// dev_8_2_fruits
-// http://127.0.0.1:8000/api/payments/
+//dev_8_2_fruits
+//http://127.0.0.1:8000/api/payments/
+// # dev_9_fruits
 // # GET /api/payments/ – 전체 결제 내역
 // # POST /api/payments/ – 결제 내역 생성
 // # GET /api/payments/<id>/ – 단일 결제 조회
@@ -11,8 +12,10 @@ import http from "./HttpCommon";
 
 export const createPayment = (shippingData, imp_uid, paid_amount) => {
     return http.post('/api/payments/', {
-        shippingData : shippingData, 
-        imp_uid : imp_uid, 
-        paid_amount : paid_amount,
-    });
-}
+        shippingData: shippingData,
+        imp_uid: imp_uid,
+        paid_amount: paid_amount,
+      })
+};
+
+

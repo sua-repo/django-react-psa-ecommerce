@@ -12,7 +12,7 @@ const Login = () => {
     const navigate = useNavigate()
 
     //dev_9_1_fruits
-    const { login, getUser } = useAuth()
+    const {login,getUser} = useAuth()
 
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -29,7 +29,7 @@ const Login = () => {
     }
     
 
-    //dev_9_1_Fruit
+    //dev_9_1_fruits
     useEffect(() => {        
         // Kakao SDK 초기화        
         if (window.Kakao && !window.Kakao.isInitialized()) {
@@ -48,7 +48,8 @@ const Login = () => {
         //https://developers.kakao.com/docs/latest/ko/kakaologin/js
 
         window.Kakao.Auth.login({
-            scope: 'profile_nickname, account_email', // 원하는 scope
+            //scope: 'profile_nickname, account_email, gender', // 원하는 scope
+            scope: 'profile_nickname, account_email',
             success: async function (authObj) {
 
                 const kakaoAccessToken = authObj.access_token                
@@ -91,7 +92,7 @@ const Login = () => {
             <div className="row justify-content-center">
                 <div className="col-md-4 col-md-offset-4">
                     <div className="form-container">
-                    {/* dev_9_1_Fruit */}
+                    {/* dev_9_1_fruits */}
                     <div className="form-icon" onClick={handleKakaoLogin}>
                         <i className="fa fa-user" />
                     </div>

@@ -1,11 +1,12 @@
 import axios from 'axios'
 
-
+//새로 고침
 const accessToken = localStorage.getItem("access")
 
 //dev_5_fruits
 const http = axios.create({
     baseURL: import.meta.env.VITE_REQUEST_URL,
+    withCredentials: true, // ✅ 세션 쿠키도 같이 보냄 dev_9_2_Fruit
     headers:{
         Authorization: accessToken ? `Bearer ${accessToken}` : undefined,        
     }    
