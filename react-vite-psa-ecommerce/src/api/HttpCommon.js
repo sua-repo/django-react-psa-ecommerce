@@ -6,7 +6,7 @@ const accessToken = localStorage.getItem("access")
 //dev_5_fruits
 const http = axios.create({
     baseURL: import.meta.env.VITE_REQUEST_URL,
-    withCredentials: true, // ✅ 세션 쿠키도 같이 보냄 dev_9_2_Fruit
+    withCredentials: true, // ✅ 세션 쿠키도 같이 보냄 dev_9_2_fruits
     headers:{
         Authorization: accessToken ? `Bearer ${accessToken}` : undefined,        
     }    
@@ -63,9 +63,16 @@ http.interceptors.response.use(
         originalRequest._retry = true;
   
         try {
-          const refresh = localStorage.getItem("refresh");
-          const res = await axios.post("http://127.0.0.1:8000/api/auth/jwt/refresh/", {
-            refresh: refresh,
+          // const refresh = localStorage.getItem("refresh");
+          // const res = await axios.post("http://127.0.0.1:8000/api/auth/jwt/refresh/", {
+          //   refresh: refresh,
+          // });
+
+
+          // 쿠키 기반이므로 refresh를 직접 꺼내지 않아도 됨
+          // refresh 토큰을 로컬 스토리지에 저장하지 않음
+          const res = await axios.post("http://127.0.0.1:8000/api/dj-rest-auth/token/refresh/",null ,{
+            withCredentials:true,
           });
   
           const newAccess = res.data.access;

@@ -294,11 +294,14 @@ SOCIALACCOUNT_ADAPTER = "accounts.adapters.KakaoSocialAccountAdapter"
 # 3.0.0버전 이상
 REST_AUTH = {
     "USE_JWT": True,
-    "JWT_AUTH_HTTPONLY": True, #dev_9_2_fruits
-    'JWT_AUTH_REFRESH_COOKIE' : "refresh_token", #dev_9_2_fruits
-    #'JWT_AUTH_COOKIE_USE_CSRF' : True, #dev_9_2_fruits
-    'SESSION_LOGIN' :False, #dev_9_2_fruits
-    #'JWT_AUTH_SAMESITE': 'None',#dev_9_2_fruits
+    "JWT_AUTH_HTTPONLY": True, # dev_9_2_fruits
+    'JWT_AUTH_REFRESH_COOKIE' : "refresh_token", # dev_9_2_fruits
+    'SESSION_LOGIN' :False, # dev_9_2_fruits
+    'JWT_AUTH_SAMESITE': 'Lax', # dev_9_2_fruits 
+    'JWT_AUTH_COOKIE_USE_CSRF' : False, # dev_9_2_fruits
+    # Serializer 세팅
+    'USER_DETAILS_SERIALIZER' : 'accounts.serializers.UserRestAuthSerializer', 
+    'REGISTER_SERIALIZERS' : 'accounts.serializers.UserRegisterRestAuthSerializer',
 }
 
 # dev_9_2_fruits
