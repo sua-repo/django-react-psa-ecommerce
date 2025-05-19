@@ -1,0 +1,8 @@
+ul.pagination li {
+    display: inline-block;
+}
+
+ul.pagination li.active a {
+    /* color: red; */
+    background-color: #81C408;
+}

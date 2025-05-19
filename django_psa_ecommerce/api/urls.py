@@ -41,6 +41,11 @@ category_detail = category_views.CategoryViewSet.as_view(
 from api.views.payment_views import PaymentViewSet
 router.register("payments", PaymentViewSet)
 
+# dev_10_fruits
+
+from api.views.product_views import ProductViewSet
+router.register("product-list", ProductViewSet)
+
 urlpatterns = [
     # path("hello-world/", base_views.hello_world),
     # path("hello-world-json/", base_views.hello_world_json),

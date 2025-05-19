@@ -257,7 +257,10 @@ class CategoryGenericView(RetrieveUpdateDestroyAPIView):
 # dev_3_fruits
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
-    serializer_class = CategorySimpleSerializer
+    # serializer_class = CategorySimpleSerializer
+
+    # dev_10_fruits
+    serializer_class = CategorySerializer
 
     # # http://127.0.0.1:8000/api/categories/?search=%EC%9E%90%EB%B0%94
     # # 검색 필터  사용
