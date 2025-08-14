@@ -79,8 +79,8 @@ class Command(BaseCommand):
                     image_path = self.download_unsplash_image(
                         product_name, image_filename, image_dir
                     )
-                
-                #이미지 넣는 부분 => 이부분 참고 할것
+
+                # 이미지 넣는 부분 => 이부분 참고 할것
                 if image_path and os.path.exists(image_path):
                     with open(image_path, "rb") as f:
                         product.image.save(image_filename, File(f), save=True)

@@ -12,6 +12,8 @@ const Products = () => {
      
     
     useEffect(()=>{
+      console.log("VITE_REQUEST_URL =", import.meta.env.VITE_REQUEST_URL);
+
         // 카테고리 가져오기
         getCategories()
             .then((res)=>{
@@ -33,7 +35,7 @@ const Products = () => {
     },[])
 
    // filter 함수의 리턴값을 배열임
-   const filterProucts = 
+   const filterProducts = 
     selectedCategory == "전체" ? products.filter((product) => product.image != null) : products.filter((product)=> product.category.name == selectedCategory && product.image ) 
    
     products.filter((product)=> product.category.name == selectedCategory && product.image ) 
@@ -65,7 +67,7 @@ return(
               </li>
               
               {categories && categories.map((category,index)=>(
-                <li className="nav-item">
+                <li key={category.id || index} className="nav-item">
                   <a
                     className="d-flex py-2 m-2 bg-light rounded-pill"
                     data-bs-toggle="pill"
@@ -91,7 +93,7 @@ return(
                 <div className="row g-4">
                   {/* dev_4_Fruit */}
                   {
-                    filterProucts.map((product)=>(
+                    filterProducts.map((product)=>(
                     <div key={product.id} className="col-md-6 col-lg-4 col-xl-3">
                       <div className="rounded position-relative fruite-item">
                         <div className="fruite-img ratio ratio-4x3 overflow-hidden rounded-top">

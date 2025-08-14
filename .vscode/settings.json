@@ -11,7 +11,21 @@
         "editor.defaultFormatter": "monosans.djlint"
     },
 
+    // 파이썬 인터프리터를 이 프로젝트에 고정
     "python.defaultInterpreterPath": "C:\\Users\\sua07\\anaconda3\\envs\\env_django\\python.exe",
+    "python.terminal.activateEnvironment": true,
+
+    "terminal.integrated.profiles.windows": {
+        "Conda (env_django)": {
+        "path": "C:\\Windows\\System32\\cmd.exe",
+        "args": [
+            "/K",
+            "C:\\Users\\sua07\\anaconda3\\Scripts\\activate.bat C:\\Users\\sua07\\anaconda3 && conda activate env_django"
+        ]
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "Conda (env_django)",
+
     "python.languageServer": "Pylance",
     "python.analysis.autoImportCompletions": true,
     "python.analysis.indexing": true,
@@ -21,4 +35,5 @@
         "reportAttributeAccessIssue": "none"
     },
     "djlint.ignore": ["T002", "T003", "T032", "T001", "D018", "H006", "H012", "H013", "H014", "H030", "H031"]
+
 }
